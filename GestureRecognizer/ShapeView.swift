@@ -30,11 +30,15 @@ class ShapeView: UIView {
         
         let pinchGR = UIPinchGestureRecognizer(target: self, action: #selector(didPinch))
         addGestureRecognizer(pinchGR)
+        
+        let rotationGR = UIRotationGestureRecognizer(target: self, action: #selector(didRotate))
+        addGestureRecognizer(rotationGR)
     }
     
     func didPan(panGR: UIPanGestureRecognizer) {
         self.superview?.bringSubview(toFront: self)
-        let translation = panGR.translation(in: self)
+        var translation = panGR.translation(in: self)
+        translation = __CGPointApplyAffineTransform(translation, self.transform)
         self.center.x += translation.x
         self.center.y += translation.y
         panGR.setTranslation(CGPoint(x: 0, y: 0), in: self)
@@ -44,6 +48,12 @@ class ShapeView: UIView {
         self.superview?.bringSubview(toFront: self)
         let scale = pinchGR.scale
         self.transform = CGAffineTransform(scaleX: scale, y: scale)
+    }
+    
+    func didRotate(rotationGR: UIRotationGestureRecognizer) {
+        self.superview?.bringSubview(toFront: self)
+        let rotation = rotationGR.rotation
+        self.transform = CGAffineTransform(rotationAngle: rotation)
     }
     
     override func draw(_ rect: CGRect) {
