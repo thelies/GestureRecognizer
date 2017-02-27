@@ -12,9 +12,11 @@ import UIKit
 class ShapeView: UIView {
     let size: CGFloat = 150.0
     let lineWidth: CGFloat = 3
+    var fillColor: UIColor!
     
     init(origin: CGPoint) {
         super.init(frame: CGRect(x: 0, y: 0, width: size, height: size))
+        self.fillColor = randomColor()
         self.center = origin
         self.backgroundColor = UIColor.clear
         initGestureRecognizers()
@@ -58,10 +60,15 @@ class ShapeView: UIView {
     
     override func draw(_ rect: CGRect) {
         let path = UIBezierPath(roundedRect: rect.insetBy(dx: lineWidth/2, dy: lineWidth/2), cornerRadius: 10)
-        UIColor.red.setFill()
+        self.fillColor.setFill()
         path.fill()
         path.lineWidth = self.lineWidth
         UIColor.black.setStroke()
         path.stroke()
+    }
+
+    func randomColor() -> UIColor {
+        let hue: CGFloat = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
+        return UIColor(hue: hue, saturation: 0.8, brightness: 1.0, alpha: 0.8)
     }
 }
