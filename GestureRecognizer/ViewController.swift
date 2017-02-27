@@ -13,6 +13,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(didTap))
+        self.view.addGestureRecognizer(tapGR)
     }
 
     override func didReceiveMemoryWarning() {
@@ -20,6 +23,9 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    func didTap(tapGR: UITapGestureRecognizer) {
+        let tapPoint = tapGR.location(in: self.view)
+        let shapeView = ShapeView(origin: tapPoint)
+        self.view.addSubview(shapeView)
+    }
 }
-
